@@ -17,6 +17,9 @@ const schema = mongoose.Schema(
       required: true,
       select: false,
     },
+    accessToken: {
+      type: String,
+    },
   },
   {
     timestamps: {

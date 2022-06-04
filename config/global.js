@@ -7,6 +7,10 @@ global.crypto = require("crypto");
 global.ObjectId = mongoose.Types.ObjectId;
 global.moment = require("moment");
 global._ = require("lodash");
+global.jwt = require("jsonwebtoken");
+global.jwtDecode = require("jwt-decode");
+global.cors = require("cors");
+global.jwtKey = process.env.JWT_KEY;
 
 const Ajv = require("ajv");
 global.ajv = new Ajv();

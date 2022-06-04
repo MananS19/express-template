@@ -34,6 +34,7 @@ router.post(
       let user = await createUser(req.body);
       res.status(user.status).json(user);
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   }

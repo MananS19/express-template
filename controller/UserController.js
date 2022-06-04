@@ -1,4 +1,5 @@
 const User = require("../model/User");
+const { signJwtToken } = require("../config/middleware");
 
 async function createUser(data) {
   try {
@@ -6,6 +7,13 @@ async function createUser(data) {
       .createHmac("sha256", process.env.SHA_SALT)
       .update(data.password)
       .digest("hex");
+    let accessTokenData = {
+      name: data.name,
+      email: data.email,
+      mobile: data.mobile,
+    };
+    const accessToken = await signJwtToken(accessTokenData);
+    data.accessToken = accessToken;
     const user = new User(data);
     let saveData = await user.save();
     return {
@@ -39,6 +47,16 @@ async function login(data) {
         data: {},
       };
     }
+    let accessTokenData = {
+      name: user.name,
+      email: user.email,
+      mobile: user.mobile,
+    };
+    const accessToken = await signJwtToken(accessTokenData);
+    let updateAccessToken = await User.updateOne(
+      { email: data.email },
+      { accessToken: accessToken }
+    );
     return {
       status: 200,
       message: "Login successful",

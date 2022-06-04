@@ -40,7 +40,8 @@ async function login(data) {
       .createHmac("sha256", process.env.SHA_SALT)
       .update(data.password)
       .digest("hex");
-    if (password !== user.password) {
+    let match = await User.findOne({ password: password });
+    if (!match) {
       return {
         status: 401,
         message: "Invalid password",
